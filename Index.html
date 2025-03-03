@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Space Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="calendar-container">
+        <header class="calendar-header">
+            <h1>March 2025</h1>
+            <button class="nav-button prev">&#9665;</button>
+            <button class="nav-button next">&#9655;</button>
+        </header>
+
+        <div class="calendar-grid">
+            <!-- Days of the week -->
+            <div class="day-label">Sun</div>
+            <div class="day-label">Mon</div>
+            <div class="day-label">Tue</div>
+            <div class="day-label">Wed</div>
+            <div class="day-label">Thu</div>
+            <div class="day-label">Fri</div>
+            <div class="day-label">Sat</div>
+            
+            <!-- Calendar days -->
+            <div class="calendar-day event" data-event="Fleet Op - 18:00 UTC">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day event" data-event="Station Meeting - 21:00 UTC">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <!-- More days... -->
+        </div>
+
+        <div class="event-popup" id="eventPopup">
+            <p id="eventText"></p>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
