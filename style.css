@@ -101,3 +101,27 @@ body {
     box-shadow: 0 0 20px cyan;
     color: black;
 }
+/* Calendar Day Hover Effect */
+.calendar-day:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px cyan;
+    background: rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Event Popup Styling */
+.event-popup {
+    position: absolute;
+    background: rgba(0, 255, 255, 0.9);
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px cyan;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
