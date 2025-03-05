@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", () => customElements.define(
+    "EveCorpCalendar",
+    class extends HTMLElement {
+        constructor() {
+            super();
+            const template = document.getElementById(
+                "EveCorpCalendar",
+            ).content;
+            const shadowRoot = this.attachShadow({ mode: "open" });
+            shadowRoot.appendChild(template.cloneNode(true));
+        }
+    },
+));
+/**
+ * 
 document.querySelectorAll('.event').forEach(day => {
     day.addEventListener('mouseover', function () {
         let popup = document.getElementById('eventPopup');
@@ -111,3 +126,5 @@ document.addEventListener("click", function (event) {
         showEventPopup(selectedDate);
     }
 });
+
+*/
