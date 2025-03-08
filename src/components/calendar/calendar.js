@@ -74,6 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const dayCell = this.createDayCell(day, "current-month", eventClass);
                 dayCell.dataset.date = dateStr;
                 dayCell.addEventListener("click", () => this.showEventPanel(dateStr));
+                // Get today's date formatted correctly
+                const today = new Date();
+                const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+                // Add "today" class if this is today's date
+                if (dateStr === todayStr) {
+                    dayCell.classList.add("today");
+                }
                 row.appendChild(dayCell);
 
                 dayCount++;
@@ -151,7 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
             this.showEventPanel(date);
             this.updateEventStyling(date);
         }
-
+        todayStyling() {
+            const dayCell = this.shadowRoot.querySelectorAll(`.calendar-day[data-date='${new Date().toISOString()}']`);
+            dayCell.classList.add("today");
+        }
         updateEventStyling(date) {
             const dayCells = this.shadowRoot.querySelectorAll(`.calendar-day[data-date='${date}']`);
             dayCells.forEach(dayCell => {
