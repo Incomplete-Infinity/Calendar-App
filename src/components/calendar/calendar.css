@@ -95,6 +95,9 @@ table {
 th {
     color: var(--bs-body-color);
 }
+td {
+    outline: 1px solid var(--bs-body-bg);
+}
 /* Calendar Grid */
 .calendar-grid {
     display: grid;
@@ -195,6 +198,6 @@ th {
 }
 
 .today {
-    outline: 1px groove var(--bs-body-color); 
+    outline: 7px double var(--bs-body-color); 
     font-weight: bold;
 }
