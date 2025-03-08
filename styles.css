@@ -1,6 +1,5 @@
 /* Reset & Basic Styles */
 body {
-    font-family: 'Orbitron', sans-serif;
     background: radial-gradient(circle, #000428, #004e92);
     color: #fff;
     display: flex;
@@ -100,4 +99,139 @@ body {
     display: none;
     box-shadow: 0 0 20px cyan;
     color: black;
+}
+
+.event-panel {
+    position: fixed;
+    top: 20%;
+    right: 5%;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px cyan;
+    display: none;
+    z-index: 1000;
+}
+
+.event-panel h2 {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid cyan;
+}
+
+.event-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.event-panel li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.event-panel button {
+    background: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 3px 5px;
+}
+
+.week-number {
+    font-weight: bold;
+    background: rgba(0, 255, 255, 0.2);
+    text-align: center;
+    border-right: 2px solid cyan;
+}
+
+.prev-month, .next-month {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: none;
+    font-style: italic;
+}
+
+.calendar-container {
+    transition: transform 0.5s ease-in-out;
+}
+/* Reset & Basic Styles */
+body {
+    background: radial-gradient(circle, #000428, #004e92);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Calendar & Event Panel Container */
+.calendar-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* Calendar Container */
+.calendar-container {
+    width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Event Panel - Now Next to the Calendar */
+.event-panel {
+    width: 250px;
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px cyan;
+    display: none;
+    z-index: 1000;
+    flex-shrink: 0; /* Ensures it doesn't shrink when space is tight */
+}
+
+.event-panel h2 {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid cyan;
+}
+
+.event-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.event-panel li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.event-panel button {
+    background: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 3px 5px;
+}
+
+.prev-month, .next-month {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: none;
+    font-style: italic;
+}
+
+.calendar-container {
+    transition: transform 0.5s ease-in-out;
 }
