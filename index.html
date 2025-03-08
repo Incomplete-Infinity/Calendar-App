@@ -4,129 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Space Calendar</title>  
-      <!-- CSS Reset -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-         integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-         crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <!-- Halfmoon CSS -->
-      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
-         integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
-      <!-- Halfmoon modern core theme -->
-      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
-         integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous">
-      <link id="topcoat-stylesheet" rel="stylesheet"
-         href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
-   <link rel="stylesheet" href="styles.css">
+    <title>Futuristic Space Calendar</title>
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+        integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Halfmoon CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
+        integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+    <!-- Halfmoon modern core theme -->
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
+        integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous">
+    <link id="topcoat-stylesheet" rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
+    <link rel="stylesheet" href="./src/css/styles.css">
 </head>
 
 <body data-bs-theme="dark" data-bs-core="modern">
     <corp-calendar></corp-calendar>
 
     <!-- Template for the calendar -->
-     <template id="calendar-template">
-      <style>
-                .calendar-container {
-                    width: 400px;
-                    background: rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(10px);
-                    border: 2px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
-                    border-radius: 10px;
-                    padding: 20px;
-                    text-align: center;
-                }
+    <template id="calendar-template">
+        <!-- Halfmoon.css -->
+        <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
+            integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous" />
+        <!-- Halfmoon modern core theme -->
+        <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
+            integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous" />
+        <!-- Mobile Dark -->
+        <link id="topcoat-stylesheet" rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css"
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-                .calendar-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
+        <link href="./src/css/calendar.css" rel="stylesheet">
+        <div class="calendar-wrapper">
+            <div class="calendar-container">
+                <header class="calendar-header">
+                    <h1 id="month-title"></h1>
+                    <div class="btn-group ms-auto">
+                        <button class="btn nav-button prev">&#9665;</button>
+                        <button class="btn nav-button next">&#9655;</button>
+                    </div>
+                </header>
 
-                .nav-button {
-                    background: none;
-                    border: 2px solid cyan;
-                    color: cyan;
-                    font-size: 20px;
-                    cursor: pointer;
-                    padding: 5px 10px;
-                    border-radius: 5px;
-                    transition: 0.3s;
-                }
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sun</th>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>
+                            <th>Thu</th>
+                            <th>Fri</th>
+                            <th>Sat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body"></tbody>
+                </table>
+            </div>
 
-                .nav-button:hover {
-                    background: cyan;
-                    color: black;
-                    box-shadow: 0 0 10px cyan;
-                }
+            <!-- Fixed Event Details Panel -->
+            <aside class="card event-panel" id="eventPanel">
+                <header class="card-header row">
+                    <h2 class="col-10">Events for <time id="selectedDate" datetime></time></h2>
+                    <button id="closeEventPanel" class="col-2 rounded btn topcoat-button">X</button>
+                </header>
+                <div class="card-body">
+                <ul id="eventList"></ul>
+                <fieldset>
+                    <legend class="">Add Event
+                    </legend>
+                    <div class="row">
+                        <div class="col-9 form-floating">
+                            <input type="text" class="form-control topcoat-text-input" id="newEventTitle" required>
+                            <label for="newEventTitle">Title</label>
+                        </div>
+                        <div class="col-auto">
+                            <button id="addEventButton"
+                                class="btn bg-success btn-success btn-outline-success input-group-text topcoat-button">+</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto form-floating">
+                            <input type="time" class="form-control topcoat-text-input" id="newEventTime">
+                            <label for="newEventTime">Time</label>
+                        </div>
 
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 10px;
-                }
+                    </div>
 
-                th, td {
-                    border: 1px solid rgba(0, 255, 255, 0.5);
-                    padding: 10px;
-                    text-align: center;
-                }
+                    <div class="col-auto form-floating">
+                        <textarea class="form-control topcoat-text-input" type="text" id="newEventInput"
+                            placeholder="Description"></textarea>
+                        <label for="newEventInput">Description</label>
+                    </div>
 
-                th {
-                    background: rgba(0, 255, 255, 0.2);
-                    text-transform: uppercase;
-                }
-
-                .event {
-                    background: rgba(0, 255, 255, 0.3);
-                    box-shadow: 0 0 15px cyan;
-                }
-
-                .event-popup {
-                    position: absolute;
-                    background: rgba(0, 255, 255, 0.8);
-                    padding: 10px;
-                    border-radius: 5px;
-                    display: none;
-                    box-shadow: 0 0 20px cyan;
-                    color: black;
-                }
-            </style>
-       
-
-    <div class="calendar-container">
-        <header class="calendar-header">
-            <h1 id="month-title"></h1>
-            <button class="nav-button prev">&#9665;</button>
-            <button class="nav-button next">&#9655;</button>
-        </header>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-        </table>
-    </div>
-
-    <!-- Fixed Event Details Panel -->
-    <div class="event-panel" id="eventPanel">
-        <h2>Events for <span id="selectedDate"></span></h2>
-        <ul id="eventList"></ul>
-        <input type="text" id="newEventInput" placeholder="New Event">
-        <button id="addEventButton" class="btn topcoat-button">Add Event</button>
-        <button id="closeEventPanel" class="btn topcoat-button">Close</button>
-    </div>
-</template>
+                </fieldset>
+                </div>
+            </aside>
+        </div>
+    </template>
 
     <script src="script.js"></script>
 </body>
+
 </html>
