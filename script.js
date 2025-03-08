@@ -1,130 +1,173 @@
-document.addEventListener("DOMContentLoaded", () => customElements.define(
-    "EveCorpCalendar",
-    class extends HTMLElement {
+document.addEventListener("DOMContentLoaded", () => {
+    class CorpCalendar extends HTMLElement {
         constructor() {
             super();
-            const template = document.getElementById(
-                "EveCorpCalendar",
-            ).content;
-            const shadowRoot = this.attachShadow({ mode: "open" });
-            shadowRoot.appendChild(template.cloneNode(true));
-        }
-    },
-));
-/**
- * 
-document.querySelectorAll('.event').forEach(day => {
-    day.addEventListener('mouseover', function () {
-        let popup = document.getElementById('eventPopup');
-        popup.style.display = 'block';
-        popup.textContent = this.dataset.event;
-        popup.style.left = `${this.getBoundingClientRect().left}px`;
-        popup.style.top = `${this.getBoundingClientRect().top - 30}px`;
-    });
+            const template = document.getElementById("calendar-template").content.cloneNode(true);
+            const shadow = this.attachShadow({ mode: "open" });
 
-    day.addEventListener('mouseout', function () {
-        document.getElementById('eventPopup').style.display = 'none';
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    const monthTitle = document.getElementById("month-title");
-    const calendarGrid = document.querySelector(".calendar-grid");
-    const prevBtn = document.querySelector(".prev");
-    const nextBtn = document.querySelector(".next");
+            // Append the template to the shadow DOM
+            shadow.appendChild(template);
 
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
+            // Include external styles manually
+            const link = document.createElement("link");
+            link.setAttribute("rel", "stylesheet");
+            link.setAttribute("href", "styles.css");
+            shadow.appendChild(link);
 
-    // Month Names
-    const monthNames = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+            this.monthTitle = shadow.getElementById("month-title");
+            this.calendarBody = shadow.querySelector("#calendar-body");
+            this.prevBtn = shadow.querySelector(".prev");
+            this.nextBtn = shadow.querySelector(".next");
 
-    function generateCalendar(month, year) {
-        // Clear previous content
-        calendarGrid.innerHTML = `
-            <div class="day-label">Sun</div>
-            <div class="day-label">Mon</div>
-            <div class="day-label">Tue</div>
-            <div class="day-label">Wed</div>
-            <div class="day-label">Thu</div>
-            <div class="day-label">Fri</div>
-            <div class="day-label">Sat</div>
-        `;
+            this.eventPanel = shadow.getElementById("eventPanel");
+            this.selectedDateEl = shadow.getElementById("selectedDate");
+            this.eventList = shadow.getElementById("eventList");
+            this.newEventInput = shadow.getElementById("newEventInput");
+            this.addEventButton = shadow.getElementById("addEventButton");
+            this.closeEventPanel = shadow.getElementById("closeEventPanel");
 
-        // Get first day of the month
-        let firstDay = new Date(year, month, 1).getDay();
-        let totalDays = new Date(year, month + 1, 0).getDate();
+            this.currentDate = new Date();
+            this.events = {
+                "2025-03-05": ["Fleet Op - 18:00 UTC"],
+                "2025-03-12": ["Mining Expedition - 16:00 UTC"],
+                "2025-03-18": ["Station Meeting - 20:00 UTC"],
+            };
 
-        // Fill empty slots for first week
-        for (let i = 0; i < firstDay; i++) {
-            calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
+            this.prevBtn.addEventListener("click", () => this.changeMonth(-1));
+            this.nextBtn.addEventListener("click", () => this.changeMonth(1));
+            this.closeEventPanel.addEventListener("click", () => this.hideEventPanel());
+            this.addEventButton.addEventListener("click", () => this.addEvent());
+
+            this.generateCalendar();
         }
 
-        // Add actual days
-        for (let day = 1; day <= totalDays; day++) {
-            calendarGrid.innerHTML += `<div class="calendar-day" data-day="${day}">${day}</div>`;
+        generateCalendar() {
+            const month = this.currentDate.getMonth();
+            const year = this.currentDate.getFullYear();
+            const firstDay = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+            const prevMonthDays = new Date(year, month, 0).getDate(); // Last day of previous month
+            const nextMonthDays = 42 - (firstDay + totalDays); // Extra days from next month
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            this.monthTitle.textContent = `${monthNames[month]} ${year}`;
+            this.calendarBody.innerHTML = ""; // Clear previous content
+
+            let row = document.createElement("tr");
+            let dayCount = 0;
+
+            // Fill previous month's days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                row.appendChild(this.createDayCell(prevMonthDays - i, "prev-month"));
+                dayCount++;
+            }
+
+            // Fill current month's days
+            for (let day = 1; day <= totalDays; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const eventList = this.events[dateStr] || [];
+                const eventClass = eventList.length ? "event" : "";
+
+                const dayCell = this.createDayCell(day, "current-month", eventClass);
+                dayCell.dataset.date = dateStr;
+                dayCell.addEventListener("click", () => this.showEventPanel(dateStr));
+                row.appendChild(dayCell);
+
+                dayCount++;
+                if (dayCount % 7 === 0) {
+                    this.calendarBody.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
+
+            // Fill next month's days
+            let nextDay = 1;
+            while (dayCount < 42) {
+                row.appendChild(this.createDayCell(nextDay++, "next-month"));
+                dayCount++;
+
+                if (dayCount % 7 === 0) {
+                    this.calendarBody.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
         }
 
-        // Update the header
-        monthTitle.textContent = `${monthNames[month]} ${year}`;
+        createDayCell(day, monthClass, eventClass = "") {
+            const dayCell = document.createElement("td");
+            dayCell.classList.add("calendar-day", monthClass);
+            if (eventClass) dayCell.classList.add(eventClass);
+            dayCell.textContent = day;
+            return dayCell;
+        }
+
+        showEventPanel(date) {
+            this.selectedDateEl.textContent = date;
+            this.eventList.innerHTML = "";
+
+            const events = this.events[date] || [];
+            events.forEach((event, index) => {
+                const li = document.createElement("li");
+                li.textContent = event;
+
+                const removeBtn = document.createElement("button");
+                removeBtn.textContent = "❌";
+                removeBtn.addEventListener("click", () => this.removeEvent(date, index));
+
+                li.appendChild(removeBtn);
+                this.eventList.appendChild(li);
+            });
+
+            this.eventPanel.style.display = "block";
+        }
+
+        hideEventPanel() {
+            this.eventPanel.style.display = "none";
+        }
+
+        addEvent() {
+            const date = this.selectedDateEl.textContent;
+            const newEvent = this.newEventInput.value.trim();
+            if (!newEvent) return;
+
+            if (!this.events[date]) {
+                this.events[date] = [];
+            }
+
+            this.events[date].push(newEvent);
+            this.newEventInput.value = "";
+            this.showEventPanel(date);
+            this.updateEventStyling(date);
+        }
+
+        removeEvent(date, index) {
+            this.events[date].splice(index, 1);
+            if (this.events[date].length === 0) {
+                delete this.events[date];
+            }
+            this.showEventPanel(date);
+            this.updateEventStyling(date);
+        }
+
+        updateEventStyling(date) {
+            const dayCells = this.shadowRoot.querySelectorAll(`.calendar-day[data-date='${date}']`);
+            dayCells.forEach(dayCell => {
+                if (this.events[date] && this.events[date].length > 0) {
+                    dayCell.classList.add("event");
+                } else {
+                    dayCell.classList.remove("event");
+                }
+            });
+        }
+
+        changeMonth(direction) {
+            this.currentDate.setMonth(this.currentDate.getMonth() + direction);
+            this.generateCalendar();
+        }
     }
 
-    // Change months
-    prevBtn.addEventListener("click", () => {
-        currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
-        currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear;
-        generateCalendar(currentMonth, currentYear);
-    });
-
-    nextBtn.addEventListener("click", () => {
-        currentMonth = (currentMonth === 11) ? 0 : currentMonth + 1;
-        currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear;
-        generateCalendar(currentMonth, currentYear);
-    });
-
-    // Initialize Calendar
-    generateCalendar(currentMonth, currentYear);
+    customElements.define("corp-calendar", CorpCalendar);
 });
-const events = {
-    "2025-03-05": "Fleet Op - 18:00 UTC",
-    "2025-03-12": "Mining Expedition - 16:00 UTC",
-    "2025-03-18": "Station Meeting - 20:00 UTC"
-};
-
-function showEventPopup(date) {
-    // Remove existing popups
-    const existingPopup = document.querySelector(".event-popup");
-    if (existingPopup) existingPopup.remove();
-
-    const popup = document.createElement("div");
-    popup.classList.add("event-popup");
-
-    if (events[date]) {
-        popup.textContent = `📅 ${date}: ${events[date]}`;
-    } else {
-        popup.textContent = `No events on ${date}`;
-    }
-
-    document.body.appendChild(popup);
-
-    // Position near the mouse cursor
-    popup.style.top = `${event.clientY + 10}px`;
-    popup.style.left = `${event.clientX + 10}px`;
-
-    // Remove popup after 3 seconds
-    setTimeout(() => popup.remove(), 3000);
-}
-
-
-// Attach event listener after calendar loads
-document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("calendar-day")) {
-        const selectedDay = event.target.dataset.day;
-        const selectedDate = `2025-03-${selectedDay.padStart(2, "0")}`;
-        showEventPopup(selectedDate);
-    }
-});
-
-*/

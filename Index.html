@@ -5,53 +5,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Futuristic Space Calendar</title>  
+      <!-- CSS Reset -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+         integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+         crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <!-- Halfmoon CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
+         integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+      <!-- Halfmoon modern core theme -->
+      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
+         integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous">
+      <link id="topcoat-stylesheet" rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
+   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-    <template id="EveCorpCalendar">
-        <link rel="stylesheet" href="styles.css">
-        <div class="calendar-container">
-            <header class="calendar-header">
-                <h1>March 2025</h1>
-                <button class="nav-button prev">&#9665;</button>
-                <button class="nav-button next">&#9655;</button>
-            </header>
+<body data-bs-theme="dark" data-bs-core="modern">
+    <corp-calendar></corp-calendar>
 
-            <div class="calendar-grid">
-                <!-- Days of the week -->
-                <div class="day-label">Sun</div>
-                <div class="day-label">Mon</div>
-                <div class="day-label">Tue</div>
-                <div class="day-label">Wed</div>
-                <div class="day-label">Thu</div>
-                <div class="day-label">Fri</div>
-                <div class="day-label">Sat</div>
+    <!-- Template for the calendar -->
+     <template id="calendar-template">
+      <style>
+                .calendar-container {
+                    width: 400px;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    border: 2px solid rgba(255, 255, 255, 0.2);
+                    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+                    border-radius: 10px;
+                    padding: 20px;
+                    text-align: center;
+                }
 
-                <!-- Calendar days -->
-                <div class="calendar-day event" data-event="Fleet Op - 18:00 UTC">1</div>
-                <div class="calendar-day">2</div>
-                <div class="calendar-day">3</div>
-                <div class="calendar-day">4</div>
-                <div class="calendar-day event" data-event="Station Meeting - 21:00 UTC">5</div>
-                <div class="calendar-day">6</div>
-                <div class="calendar-day">7</div>
-                <!-- More days... -->
-            </div>
+                .calendar-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
 
-            <div class="event-popup" id="eventPopup">
-                <p id="eventText"></p>
-            </div>
-        </div>
-    </template>
-    <!-- Event Popup Form -->
-    <div id="event-form" class="event-form">
-        <h3>Add Event</h3>
-        <input type="date" id="event-date" readonly>
-        <input type="text" id="event-title" placeholder="Event Title">
-        <button id="save-event">Save</button>
-        <button id="cancel-event">Cancel</button>
+                .nav-button {
+                    background: none;
+                    border: 2px solid cyan;
+                    color: cyan;
+                    font-size: 20px;
+                    cursor: pointer;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    transition: 0.3s;
+                }
+
+                .nav-button:hover {
+                    background: cyan;
+                    color: black;
+                    box-shadow: 0 0 10px cyan;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                }
+
+                th, td {
+                    border: 1px solid rgba(0, 255, 255, 0.5);
+                    padding: 10px;
+                    text-align: center;
+                }
+
+                th {
+                    background: rgba(0, 255, 255, 0.2);
+                    text-transform: uppercase;
+                }
+
+                .event {
+                    background: rgba(0, 255, 255, 0.3);
+                    box-shadow: 0 0 15px cyan;
+                }
+
+                .event-popup {
+                    position: absolute;
+                    background: rgba(0, 255, 255, 0.8);
+                    padding: 10px;
+                    border-radius: 5px;
+                    display: none;
+                    box-shadow: 0 0 20px cyan;
+                    color: black;
+                }
+            </style>
+       
+
+    <div class="calendar-container">
+        <header class="calendar-header">
+            <h1 id="month-title"></h1>
+            <button class="nav-button prev">&#9665;</button>
+            <button class="nav-button next">&#9655;</button>
+        </header>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+        </table>
     </div>
+
+    <!-- Fixed Event Details Panel -->
+    <div class="event-panel" id="eventPanel">
+        <h2>Events for <span id="selectedDate"></span></h2>
+        <ul id="eventList"></ul>
+        <input type="text" id="newEventInput" placeholder="New Event">
+        <button id="addEventButton" class="btn topcoat-button">Add Event</button>
+        <button id="closeEventPanel" class="btn topcoat-button">Close</button>
+    </div>
+</template>
+
     <script src="script.js"></script>
 </body>
-
 </html>
