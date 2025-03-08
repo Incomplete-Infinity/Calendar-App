@@ -26,7 +26,7 @@
     <!-- Template for the calendar -->
     <template id="calendar-template">
         <link href="./src/components/calendar/calendar.css" rel="stylesheet">
-        <div class="calendar-wrapper">
+        <div class="calendar-wrapper text-body" data-bs-theme="dark" data-bs-core="modern">
             <div class="calendar-container">
                 <header class="calendar-header">
                     <h1 id="month-title"></h1>
@@ -59,35 +59,35 @@
                     <button id="closeEventPanel" class="col-2 rounded btn topcoat-button">X</button>
                 </header>
                 <div class="card-body">
-                <ul id="eventList"></ul>
-                <fieldset>
-                    <legend class="">Add Event
-                    </legend>
-                    <div class="row">
-                        <div class="col-9 form-floating">
-                            <input type="text" class="form-control topcoat-text-input" id="newEventTitle" required>
-                            <label for="newEventTitle">Title</label>
+                    <ul id="eventList"></ul>
+                    <fieldset>
+                        <legend class="">Add Event
+                        </legend>
+                        <div class="row">
+                            <div class="col-9 form-floating">
+                                <input type="text" class="form-control topcoat-text-input" id="newEventTitle" required>
+                                <label for="newEventTitle">Title</label>
+                            </div>
+                            <div class="position-absolute">
+                                <button id="addEventButton"
+                                    class="btn bg-success btn-success btn-outline-success input-group-text topcoat-button">+</button>
+                            </div>
                         </div>
-                        <div class="position-absolute">
-                            <button id="addEventButton"
-                                class="btn bg-success btn-success btn-outline-success input-group-text topcoat-button">+</button>
+                        <div class="row">
+                            <div class="col-auto form-floating">
+                                <input type="time" class="form-control topcoat-text-input" id="newEventTime">
+                                <label for="newEventTime">Time</label>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="row">
+
                         <div class="col-auto form-floating">
-                            <input type="time" class="form-control topcoat-text-input" id="newEventTime">
-                            <label for="newEventTime">Time</label>
+                            <textarea class="form-control topcoat-text-input" type="text" id="newEventInput"
+                                placeholder="Description"></textarea>
+                            <label for="newEventInput">Description</label>
                         </div>
 
-                    </div>
-
-                    <div class="col-auto form-floating">
-                        <textarea class="form-control topcoat-text-input" type="text" id="newEventInput"
-                            placeholder="Description"></textarea>
-                        <label for="newEventInput">Description</label>
-                    </div>
-
-                </fieldset>
+                    </fieldset>
                 </div>
             </aside>
         </div>

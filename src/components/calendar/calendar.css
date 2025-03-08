@@ -78,7 +78,7 @@
 
 .nav-button:hover {
     background: cyan;
-    color: black;
+    color: var(--bs-body-color);
     box-shadow: 0 0 10px cyan;
 }
 
@@ -88,7 +88,9 @@ table {
     border-collapse: collapse;
     margin-top: 10px;
 }
-
+th {
+    color: var(--bs-body-color);
+}
 /* Calendar Grid */
 .calendar-grid {
     display: grid;
@@ -110,6 +112,7 @@ table {
     text-align: center;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
+    color: var(--bs-body-color);
 }
 
 .calendar-day:hover {
@@ -169,12 +172,12 @@ table {
 /* Event Popup */
 .event-popup {
     position: absolute;
-    background: rgba(0, 255, 255, 0.8);
+    background: var(--bs-body-bg);
     padding: 10px;
     border-radius: 5px;
     display: none;
     box-shadow: 0 0 20px cyan;
-    color: black;
+    color: var(--bs-body-color);
 }
 
 /* Week Numbers */
