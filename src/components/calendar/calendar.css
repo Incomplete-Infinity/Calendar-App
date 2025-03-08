@@ -98,20 +98,28 @@ th {
     gap: 5px;
     margin-top: 10px;
 }
-
+.calendar-day {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5);
+}
 /* Days */
 .calendar-day,
 .event,
 .prev-month,
 .next-month {
-    background: rgba(0, 255, 255, 0.1);
-    border: 1px solid rgba(0, 255, 255, 0.5);
-    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.5);
+
     padding: 15px;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
+
+}
+
+
+
+.calendar-day {
     color: var(--bs-body-color);
 }
 
@@ -136,8 +144,9 @@ th {
 
 /* Previous & Next Month Days */
 .prev-month, .next-month {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(127, 127, 127, 0.1);
     font-style: italic;
+    background: none;
 }
 
 /* Event Panel */
