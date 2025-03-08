@@ -97,6 +97,7 @@ th {
 }
 td {
     outline: 1px solid var(--bs-body-bg);
+    border-radius: 10px;
 }
 /* Calendar Grid */
 .calendar-grid {
@@ -200,4 +201,5 @@ td {
 .today {
     outline: 7px double var(--bs-body-color); 
     font-weight: bold;
+    outline-offset: -7px;
 }
