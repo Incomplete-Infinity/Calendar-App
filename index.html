@@ -25,18 +25,7 @@
 
     <!-- Template for the calendar -->
     <template id="calendar-template">
-        <!-- Halfmoon.css -->
-        <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
-            integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous" />
-        <!-- Halfmoon modern core theme -->
-        <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
-            integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous" />
-        <!-- Mobile Dark -->
-        <link id="topcoat-stylesheet" rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css"
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        <link href="./src/css/calendar.css" rel="stylesheet">
+        <link href="./src/components/calendar/calendar.css" rel="stylesheet">
         <div class="calendar-wrapper">
             <div class="calendar-container">
                 <header class="calendar-header">
@@ -79,7 +68,7 @@
                             <input type="text" class="form-control topcoat-text-input" id="newEventTitle" required>
                             <label for="newEventTitle">Title</label>
                         </div>
-                        <div class="col-auto">
+                        <div class="position-absolute">
                             <button id="addEventButton"
                                 class="btn bg-success btn-success btn-outline-success input-group-text topcoat-button">+</button>
                         </div>
@@ -104,7 +93,7 @@
         </div>
     </template>
 
-    <script src="script.js"></script>
+    <script src="./src/components/calendar/calendar.js"></script>
 </body>
 
 </html>

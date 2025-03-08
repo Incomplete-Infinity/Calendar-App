@@ -1,13 +1,13 @@
 @font-face {
     font-family: "Eve Sans Neue";
-    src: url("../../font/evesansneue-bold.ttf") format("truetype");
+    src: url("../assets/fonts/evesansneue-bold.ttf") format("truetype");
     font-style: normal;
     font-weight: bold;
 }
 
 @font-face {
     font-family: "Eve Sans Neue";
-    src: url("../../font/evesansneue-condensed.ttf") format("truetype");
+    src: url("../assets/fonts/evesansneue-condensed.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
     font-stretch: condensed;
@@ -15,7 +15,7 @@
 
 @font-face {
     font-family: "Eve Sans Neue";
-    src: url("../../font/evesansneue-expanded.ttf") format("truetype");
+    src: url("../assests/fonts/evesansneue-expanded.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
     font-stretch: expanded;
