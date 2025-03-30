@@ -1,99 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Futuristic Space Calendar</title>
     <!-- CSS Reset -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-        integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+      integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
     <!-- Halfmoon CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
-        integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css"
+      rel="stylesheet"
+      integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M="
+      crossorigin="anonymous" />
     <!-- Halfmoon modern core theme -->
-    <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
-        integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous">
-    <link id="topcoat-stylesheet" rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
-    <link rel="stylesheet" href="./src/css/styles.css">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css"
+      rel="stylesheet"
+      integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs="
+      crossorigin="anonymous" />
+    <link
+      id="topcoat-stylesheet"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
+      <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
 
-<body data-bs-theme="dark" data-bs-core="modern" class="text-body">
+    <link rel="stylesheet" href="./src/css/styles.css" />
+  </head>
+
+  <body
+    data-bs-theme="dark"
+    data-bs-core="modern"
+    class="subpixel-antialiased text-body">
     <corp-calendar></corp-calendar>
 
-    <!-- Template for the calendar -->
-    <template id="calendar-template">
-        <link href="./src/components/calendar/calendar.css" rel="stylesheet">
-        <div class="calendar-wrapper text-body">
-            <div class="calendar-container">
-                <header class="calendar-header">
-                    <h1 id="month-title"></h1>
-                    <div class="btn-group ms-auto">
-                        <button class="btn nav-button prev">&#9665;</button>
-                        <button class="btn nav-button next">&#9655;</button>
-                    </div>
-                </header>
+    <!-- Calendar UI Templates -->
+<!-- Encompassing UI Template -->
+<template id="calendar-ui-template">
+     <!-- CSS Reset -->
+     <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+     integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+     crossorigin="anonymous"
+     referrerpolicy="no-referrer" />
+   <!-- Halfmoon CSS -->
+   <link
+     href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css"
+     rel="stylesheet"
+     integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M="
+     crossorigin="anonymous" />
+   <!-- Halfmoon modern core theme -->
+   <link
+     href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css"
+     rel="stylesheet"
+     integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs="
+     crossorigin="anonymous" />
+   <link
+     id=""
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
+     <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Sun</th>
-                            <th>Mon</th>
-                            <th>Tue</th>
-                            <th>Wed</th>
-                            <th>Thu</th>
-                            <th>Fri</th>
-                            <th>Sat</th>
-                        </tr>
-                    </thead>
-                    <tbody id="calendar-body"></tbody>
-                </table>
-            </div>
+   <link href="./src/components/calendar/calendar.css" rel="stylesheet" />
+    <section class="calendar-grid-layout">
+      <div class="calendar-fixed-section">
+        <slot name="calendar"></slot>
+      </div>
+      <div class="calendar-fixed-section">
+        <slot name="event-panel"></slot>
+      </div>
+      <div class="calendar-wide-section">
+        <slot name="event-list"></slot>
+      </div>
+    </section>
+  </template>
+  
+  <!-- Calendar Template -->
+  <template id="calendar-template">
+     <!-- CSS Reset -->
+     <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+     integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
+     crossorigin="anonymous"
+     referrerpolicy="no-referrer" />
+   <!-- Halfmoon CSS -->
+   <link
+     href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css"
+     rel="stylesheet"
+     integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M="
+     crossorigin="anonymous" />
+   <!-- Halfmoon modern core theme -->
+   <link
+     href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css"
+     rel="stylesheet"
+     integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs="
+     crossorigin="anonymous" />
+   <link
+     id=""
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
+     <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
 
-            <!-- Fixed Event Details Panel -->
-            <aside class="card event-panel" id="eventPanel">
-                <header class="card-header row">
-                    <h2 class="col-10">Events for <time id="selectedDate" datetime></time></h2>
-                    <button id="closeEventPanel" class="col-2 rounded btn topcoat-button">X</button>
-                </header>
-                <div class="card-body">
-                    <ul id="eventList"></ul>
-                    <fieldset>
-                        <legend class="">Add Event
-                        </legend>
-                        <div class="row">
-                            <div class="col-9 form-floating">
-                                <input type="text" class="form-control topcoat-text-input" id="newEventTitle" required>
-                                <label for="newEventTitle">Title</label>
-                            </div>
-                            <div class="position-absolute">
-                                <button id="addEventButton"
-                                    class="btn bg-success btn-success btn-outline-success input-group-text topcoat-button">+</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-auto form-floating">
-                                <input type="time" class="form-control topcoat-text-input" id="newEventTime">
-                                <label for="newEventTime">Time</label>
-                            </div>
+   <link href="./src/components/calendar/calendar.css" rel="stylesheet" />
+   <section class="calendar card rounded border p-2 bg-body" slot="calendar">
 
-                        </div>
+      <header class="calendar-header card-header d-flex justify-content-between align-items-center" data-augmented-ui="bl-round tl-round tr-round inlay">
+        <h1 id="month-title" class="text-uppercase text-center flex-grow-1"></h1>
 
-                        <div class="col-auto form-floating">
-                            <textarea class="form-control topcoat-text-input" type="text" id="newEventInput"
-                                placeholder="Description"></textarea>
-                            <label for="newEventInput">Description</label>
-                        </div>
+      </header>
+      <table class="calendar-table table-striped mt-2" data-augmented-ui="bl-round br-round inlay">
+        <thead data-augmented-ui="tl-round br-round inlay">
+          <tr>
+            <th scope="col">Sun</th>
+            <th scope="col">Mon</th>
+            <th scope="col">Tue</th>
+            <th scope="col">Wed</th>
+            <th scope="col">Thu</th>
+            <th scope="col">Fri</th>
+            <th scope="col">Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body" data-augmented-ui="tr-round bl-round def"></tbody>
+      </table>
+      <footer class="card-footer text-center">
+        <div class="btn-group">
+            <button class="btn topcoat-icon-button nav-button prev rounded-end-0 ps-5" data-augmented-ui="bl-round-x tl-round inlay">&#9665;</button>
+            <button class="btn topcoat-icon-button nav-button next rounded-start-0 pe-5" data-augmented-ui="tr-round-x br-round inlay">&#9655;</button>
+          </div>
+      </footer>
+    </section>
+  </template>
+  
+  <!-- Calendar Row Template -->
+  <template id="calendar-row-template">
+    <tr class="calendar-row"></tr>
+  </template>
+  
+  <!-- Calendar Cell Template -->
+  <template id="calendar-cell-template">
+    <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
+    <td class="calendar-day" data-augmented-ui="tr-round bl-round inlay">
+      <span class="day-number"></span>
+      <time datetime=""></time>
+    </td>
+  </template>  
+  
+  <!-- Event Panel Template -->
+  <template id="event-panel-template">
+    <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
 
-                    </fieldset>
-                </div>
-            </aside>
+    <section class="card event-panel p-4" slot="event-panel" augmented-ui="tr-round-x bl-round-y border">
+
+      <header class="card-header d-flex justify-content-between align-items-center mb-3" data-augmented-ui="tl-round tr-round-x br-round bl-round-x both">
+        <h3>Add Event</h3>
+        <button id="closeEventPanel" class="btn topcoat-icon-button--quiet">❌</button>
+      </header>
+  
+      <form id="addEventForm" class="bg-primary-subtle">
+        <div class="mb-3 form-floating">
+          <input type="text" id="newEventTitle" class="form-control topcoat-text-input" placeholder="Title" required data-augmented-ui="tl-round tr-round-x br-round bl-round-x" />
+          <label for="newEventTitle">Title</label>
         </div>
-    </template>
+        <div class="mb-3 form-floating">
+          <input type="time" id="newEventTime" class="form-control topcoat-text-input" placeholder="Time" data-augmented-ui="tl-round tr-round-x br-round bl-round-x"/>
+          <label for="newEventTime">Time</label>
+        </div>
+        <div class="mb-3 form-floating">
+          <textarea id="newEventInput" class="form-control topcoat-text-input" style="height: 8em;" placeholder="Description" data-augmented-ui="tl-round tr-round-x br-round bl-round-x"></textarea>
+          <label for="newEventInput">Description</label>
+        </div>
+        <div class="text-center">
+          <button id="addEventButton" type="button" class="btn btn-success topcoat-button px-5" data-augmented-ui="tl-round tr-round-x br-round bl-round-x inlay">➕ Add</button>
+        </div>
+      </form>
+    </section>
+  </template>
+  
+  <!-- Event List Template -->
+  <template id="event-list-template">
+    <link rel="stylesheet" href="https://unpkg.com/augmented-ui/augmented-ui.min.css">
 
+    <section class="card full-width-event-list p-3 bg-body border rounded" slot="event-list" data-augmented-ui="tl-round br-round-x border">
+
+      <header class="mb-2">
+        <h2 class="mb-1">Events for <time id="selectedDate" datetime=""></time></h2>
+      </header>
+      <ul id="eventList" class="list-unstyled topcoat-list__container"></ul>
+    </section>
+  </template>
+  
+  <!-- Event List Item Template -->
+  <template id="event-list-item-template">
+    <li class="event-item d-flex justify-content-between align-items-center topcoat-list__item">
+      <span class="event-text"></span>
+      <button class="btn btn-sm topcoat-icon-button--quiet remove-event">❌</button>
+    </li>
+  </template>
+  
     <script src="./src/components/calendar/calendar.js"></script>
-</body>
-
+  </body>
 </html>

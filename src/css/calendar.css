@@ -165,12 +165,7 @@
   background: var(--bs-body-bg);
   backdrop-filter: blur(1px);
   isolation: isolate;
-  --aug-border: 1px solid var(--accent-soft, #40e0d0);
-  --aug-inlay: linear-gradient(
-    to bottom right,
-    rgba(0, 255, 255, 0.05),
-    rgba(56, 11, 61, 0.1)
-  );
+
   padding: 0.5rem;
 }
 
@@ -200,6 +195,7 @@
 
 .calendar-day.today {
   box-shadow: 0 0 12px var(--highlight);
+
   background: rgba(244, 72, 213, 0.05);
 }
 
