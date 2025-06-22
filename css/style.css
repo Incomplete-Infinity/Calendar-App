@@ -1,3 +1,46 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url("https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css");
+@import url("https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css");
+@import url("https://unpkg.com/augmented-ui/augmented-ui.min.css");
+@font-face {
+    font-family: "Eve Sans Neue";
+    src: url("./../font/evesansneue-bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Eve Sans Neue";
+    src: url("./../font/evesansneue-condensed.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: condensed;
+}
+
+@font-face {
+    font-family: "Eve Sans Neue";
+    src: url("./../font/evesansneue-expanded.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+    font-stretch: expanded;
+}
+* {
+    font-family: "Eve Sans Neue", sans-serif;
+    border-radius: none !important;
+    -webkit-border-radius: none !important;
+    -moz-border-radius: none !important;
+    -ms-border-radius: none !important;
+    -o-border-radius: none !important;
+}
+/* Reset & Basic Styles */
+body {
+    background: radial-gradient(circle, #00042899, #004e9299);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 /*! HTML5 Boilerplate v9.0.1 | MIT License | https://html5boilerplate.com/ */
 
 /* main.css 3.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
