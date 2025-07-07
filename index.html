@@ -1,132 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Futuristic Space Calendar</title>
+    <link
+      id="topcoat-stylesheet"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Space Calendar</title>  
-      <!-- CSS Reset -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-         integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-         crossorigin="anonymous" referrerpolicy="no-referrer" />
-      <!-- Halfmoon CSS -->
-      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css" rel="stylesheet"
-         integrity="sha256-SsJizWSIG9JT9Qxbiy8xnYJfjCAkhEQ0hihxRn7jt2M=" crossorigin="anonymous">
-      <!-- Halfmoon modern core theme -->
-      <link href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/cores/halfmoon.modern.css" rel="stylesheet"
-         integrity="sha256-DD6elX+jPmbFYPsGvzodUv2+9FHkxHlVtQi0/RJVULs=" crossorigin="anonymous">
-      <link id="topcoat-stylesheet" rel="stylesheet"
-         href="https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.min.css" />
-   <link rel="stylesheet" href="styles.css">
-</head>
+  </head>
 
-<body data-bs-theme="dark" data-bs-core="modern">
-    <corp-calendar></corp-calendar>
+  <body
+    data-bs-theme="dark"
+    data-bs-core="modern"
+    class="subpixel-antialiased text-body"
+  >
+    <corp-calendar
+      data-augmented-ui="tl-clip br-clip both"
+      class="p-5"
+    ></corp-calendar>
 
-    <!-- Template for the calendar -->
-     <template id="calendar-template">
-      <style>
-                .calendar-container {
-                    width: 400px;
-                    background: rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(10px);
-                    border: 2px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
-                    border-radius: 10px;
-                    padding: 20px;
-                    text-align: center;
-                }
+    <!-- Calendar UI Templates -->
+    <!-- Encompassing UI Template -->
+    <template id="calendar-ui-template">
+      <section class="calendar-grid-layout">
+        <div class="calendar-fixed-section">
+          <slot name="calendar"></slot>
+        </div>
+        <div class="calendar-fixed-section">
+          <slot name="event-panel"></slot>
+        </div>
+        <div class="calendar-wide-section">
+          <slot name="event-list"></slot>
+        </div>
+      </section>
+    </template>
 
-                .calendar-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .nav-button {
-                    background: none;
-                    border: 2px solid cyan;
-                    color: cyan;
-                    font-size: 20px;
-                    cursor: pointer;
-                    padding: 5px 10px;
-                    border-radius: 5px;
-                    transition: 0.3s;
-                }
-
-                .nav-button:hover {
-                    background: cyan;
-                    color: black;
-                    box-shadow: 0 0 10px cyan;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 10px;
-                }
-
-                th, td {
-                    border: 1px solid rgba(0, 255, 255, 0.5);
-                    padding: 10px;
-                    text-align: center;
-                }
-
-                th {
-                    background: rgba(0, 255, 255, 0.2);
-                    text-transform: uppercase;
-                }
-
-                .event {
-                    background: rgba(0, 255, 255, 0.3);
-                    box-shadow: 0 0 15px cyan;
-                }
-
-                .event-popup {
-                    position: absolute;
-                    background: rgba(0, 255, 255, 0.8);
-                    padding: 10px;
-                    border-radius: 5px;
-                    display: none;
-                    box-shadow: 0 0 20px cyan;
-                    color: black;
-                }
-            </style>
-       
-
-    <div class="calendar-container">
-        <header class="calendar-header">
-            <h1 id="month-title"></h1>
-            <button class="nav-button prev">&#9665;</button>
-            <button class="nav-button next">&#9655;</button>
+    <!-- Calendar Template -->
+    <template id="calendar-template">
+      <link href="./css/calendar.css" rel="stylesheet" />
+      <section
+        class="calendar card rounded-0 p-4"
+        slot="calendar"
+        data-augmented-ui="tl-clip br-clip none"
+      >
+        <header
+          class="calendar-header card-header d-flex justify-content-between align-items-center"
+          data-augmented-ui="br-clip tl-clip inlay"
+        >
+          <h1
+            id="month-title"
+            class="text-uppercase text-center flex-grow-1"
+          ></h1>
         </header>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
+        <table
+          class="calendar-table table table-striped table-striped-columns"
+          data-augmented-ui="tl-clip none"
+        >
+          <thead class="p-1" data-augmented-ui="tl-clip inlay">
+            <tr class="p-1 bg-gradient bg-info">
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Sun
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary-subtle"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Mon
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary-subtle"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Tue
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary-subtle"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Wed
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary-subtle"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Thu
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary-subtle"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Fri
+              </th>
+              <th
+                scope="col"
+                class="p-1 bg-gradient bg-primary"
+                data-augmented-ui="tl-clip inlay"
+              >
+                Sat
+              </th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body"></tbody>
         </table>
-    </div>
+        <footer class="card-footer text-center">
+          <div class="btn-group">
+            <button
+              class="btn topcoat-icon-button nav-button prev ps-5"
+              data-augmented-ui="tl-clip inlay"
+            >
+              &#9665;
+            </button>
+            <button
+              class="btn topcoat-icon-button nav-button next pe-5"
+              data-augmented-ui="br-clip inlay"
+            >
+              &#9655;
+            </button>
+          </div>
+        </footer>
+      </section>
+    </template>
 
-    <!-- Fixed Event Details Panel -->
-    <div class="event-panel" id="eventPanel">
-        <h2>Events for <span id="selectedDate"></span></h2>
-        <ul id="eventList"></ul>
-        <input type="text" id="newEventInput" placeholder="New Event">
-        <button id="addEventButton" class="btn topcoat-button">Add Event</button>
-        <button id="closeEventPanel" class="btn topcoat-button">Close</button>
-    </div>
-</template>
+    <!-- Calendar Row Template -->
+    <template id="calendar-row-template">
+      <tr class="calendar-row bg-primary bg-gradient bg-opacity-10"></tr>
+    </template>
 
-    <script src="script.js"></script>
-</body>
+    <!-- Calendar Cell Template -->
+    <template id="calendar-cell-template">
+      <td class="calendar-day" data-augmented-ui="tr-clip bl-clip inlay">
+        <span class="day-number"></span>
+        <time datetime=""></time>
+      </td>
+    </template>
+
+    <!-- Event Panel Template -->
+    <template id="event-panel-template">
+      <section class="card event-panel p-4 d-none" slot="event-panel">
+        <header
+          class="card-header mb-3"
+          data-augmented-ui="tl-clip br-clip inlay"
+        >
+          <hgroup
+            class="text-center d-flex justify-content-between align-items-center"
+          >
+            <h3>Add Event</h3>
+            <button id="closeEventPanel" class="btn topcoat-button">❌</button>
+          </hgroup>
+        </header>
+        <form id="addEventForm" class="bg-primary-subtle p-2" data-augmented-ui="tl-clip br-clip inlay">
+          <div class="row">
+            <div class="mb-3 form-floating col-6">
+              <input
+                type="text"
+                id="newEventTitle"
+                class="form-control topcoat-text-input"
+                placeholder="Title"
+                required
+                data-augmented-ui="tl-clip br-clip both"
+              />
+              <label for="newEventTitle">Title</label>
+            </div>
+            <div class="mb-3 form-floating col-6">
+              <input
+                type="time"
+                id="newEventTime"
+                class="form-control topcoat-text-input"
+                placeholder="00:00 00"
+                value="00:00 00"
+                data-augmented-ui="tl-clip br-clip inlay"
+              />
+              <label for="newEventTime">Time</label>
+            </div>
+          </div>
+          <div class="mb-3 form-floating">
+            <textarea
+              id="newEventInput"
+              class="form-control topcoat-textarea"
+              style="height: 12em"
+              placeholder="Description"
+              data-augmented-ui="tl-clip br-clip inlay"
+            ></textarea>
+            <label for="newEventInput">Description</label>
+          </div>
+          <div class="text-center">
+            <button
+              id="addEventButton"
+              type="button"
+              class="btn btn-success topcoat-button px-5"
+              data-augmented-ui="tl-clip br-clip inlay"
+            >
+              ➕ Add
+            </button>
+          </div>
+        </form>
+      </section>
+    </template>
+
+    <!-- Event List Template -->
+    <template id="event-list-template">
+      <section
+        class="card full-width-event-list p-3 bg-body"
+        slot="event-list"
+        data-augmented-ui="tl-clip br-clip inlay"
+      >
+        <header class="mb-2">
+          <h2 class="mb-1">
+            Events for <time id="selectedDate" datetime=""></time>
+          </h2>
+        </header>
+        <div id="event-gantt" class="event-gantt" style="position: relative; height: 50px; margin-bottom: 1rem;"></div>
+        <ul id="eventList" class="list-unstyled topcoat-list__container"></ul>
+      </section>
+    </template>
+
+    <!-- Event List Item Template -->
+    <template id="event-list-item-template">
+      <li
+        class="event-item d-flex justify-content-between align-items-center topcoat-list__item"
+      >
+        <details class="event-title">
+          <summary class="event-text"></summary>
+        </details>
+        <button class="btn btn-sm topcoat-icon-button--quiet remove-event">
+          ❌
+        </button>
+      </li>
+    </template>
+
+    <script src="./js/calendar.js"></script>
+  </body>
 </html>
